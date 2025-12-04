@@ -1,9 +1,19 @@
-Shader "USB PROJECT/Chapter 1/BillboardEffect"
+Shader "Custom/ShaderGraphIntroctionHLSL"
 {
     Properties
     {
         [MainColor] _BaseColor("Base Color", Color) = (1, 1, 1, 1)
         [MainTexture] _BaseMap("Base Map", 2D) = "white"
+
+        _Float("Float", Float) = 0
+        _Float("Float", int) = 0
+        _Float("Float", Range(0,1) ) = 0
+        [Enum(default,0)] _Float("Float", Float) = 0
+
+        _Vector2("Vector2", Vector, 2) = (0, 0, 0, 0)
+        _Vector3("Vector3", Vector, 3) = (0, 0, 0, 0)
+        _Vector4("Vector4", Vector, 4) = (0, 0, 0, 0)
+
     }
 
     SubShader
@@ -39,38 +49,10 @@ Shader "USB PROJECT/Chapter 1/BillboardEffect"
                 float4 _BaseMap_ST;
             CBUFFER_END
 
-            float4 transformation(float4 positionOS)
-            {
-                float4x4 IDENTITY_MATRIX = float4x4
-                (
-                    2,0,0,5,
-                    0,2,0,0,
-                    0,0,2,0,
-                    0,0,0,1
-                );
-
-                return mul(IDENTITY_MATRIX,positionOS);
-            }
-
             Varyings vert(Attributes IN)
             {
-                //Varyings OUT;
-                //OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
-                //OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
-                //return OUT;
-
                 Varyings OUT;
-                // 1
-                float4 vertexOS = IN.positionOS; 
-                //float4 vertexOS = transformation(IN.positionOS); esta linea usa le funcion de arriba
-                // 2
-                float4 vertexWS = mul(UNITY_MATRIX_M, float4(0,0,0,1));
-
-                float3 vertexIVS = mul(UNITY_MATRIX_I_V, vertexOS.xyz);
-                // 3
-                float4 vertexHCS = mul(UNITY_MATRIX_VP, float4(vertexWS + vertexIVS, 1.0));
-                // 4
-                OUT.positionHCS = vertexHCS;
+                OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
                 return OUT;
             }
