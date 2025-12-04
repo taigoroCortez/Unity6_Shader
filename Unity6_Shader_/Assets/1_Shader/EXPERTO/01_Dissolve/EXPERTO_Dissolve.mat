@@ -54,8 +54,8 @@ Material:
     m_Floats:
     - _DEBUG: 0
     - _DIRECTION: 0
-    - _Dissolve: 0.627
-    - _Edge_Width: 0.421
+    - _Dissolve: 0.86
+    - _Edge_Width: 0.412
     - _Noise_Scale: 100
     - _Noise_Strength: 1
     - _QueueControl: 0
