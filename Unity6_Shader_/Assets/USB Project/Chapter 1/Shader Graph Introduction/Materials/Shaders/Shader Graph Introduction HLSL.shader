@@ -1,22 +1,9 @@
-Shader "Custom/ShaderGraphIntroctionHLSL"
+Shader "Custom/ShaderGraphIntroductionHLSL"
 {
     Properties
     {
         [MainColor] _BaseColor("Base Color", Color) = (1, 1, 1, 1)
         [MainTexture] _BaseMap("Base Map", 2D) = "white"
-
-        //_Float("Float", Float) = 0
-        //_Float("Float", int) = 0
-        //_Float("Float", Range(0,1)) = 0
-        //[Enum(Default, 0)] _Float("Float", Float) = 0
-
-        _Vector2("Vector2", Vector, 2) = (0, 0, 0, 0)
-        _Vector3("Vector3", Vector, 3) = (0, 0, 0, 0)
-        _Vector4("Vector4", Vector, 4) = (0, 0, 0, 0)
-
-        [NoScaleOffset]_Texture2D_Array("Texture2D Array", 2DArray) = "" {}
-
-
     }
 
     SubShader
@@ -31,8 +18,6 @@ Shader "Custom/ShaderGraphIntroctionHLSL"
             #pragma fragment frag
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            // 1
-            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
 
             struct Attributes
             {
@@ -46,20 +31,12 @@ Shader "Custom/ShaderGraphIntroctionHLSL"
                 float2 uv : TEXCOORD0;
             };
 
-            TEXTURE2D_ARRAY(_Texture2D_Array);
-            SAMPLER(sampler_Texture2D_Array);
-
             TEXTURE2D(_BaseMap);
             SAMPLER(sampler_BaseMap);
 
             CBUFFER_START(UnityPerMaterial)
                 half4 _BaseColor;
                 float4 _BaseMap_ST;
-
-               // float2 _Vector2;
-               // float3 _Vector3;
-               // float4 _Vector4;
-
             CBUFFER_END
 
             Varyings vert(Attributes IN)
@@ -74,13 +51,6 @@ Shader "Custom/ShaderGraphIntroctionHLSL"
             {
                 half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
                 return color;
-
-                // 1
-                UnityTexture2DArray texture_array = UnityBuildTexture2DArrayStruct(_Texture2D_Array);
-                // 2
-                float4 base_texture = PLATFORM_SAMPLE_TEXTURE2D_ARRAY(texture_array.tex,texture_array.samplerstate, IN.uv, float(3));
-                return base_texture;
-
             }
             ENDHLSL
         }
